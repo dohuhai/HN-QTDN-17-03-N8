@@ -1,0 +1,328 @@
+[1mdiff --git a/addons/ql_tinh_luong/__init__.py b/addons/ql_tinh_luong/__init__.py[m
+[1mnew file mode 100644[m
+[1mindex 00000000..9b429614[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/__init__.py[m
+[36m@@ -0,0 +1,2 @@[m
+[32m+[m[32mfrom . import models[m
+[32m+[m[32mfrom . import wizard[m
+[1mdiff --git a/addons/ql_tinh_luong/__manifest__.py b/addons/ql_tinh_luong/__manifest__.py[m
+[1mnew file mode 100644[m
+[1mindex 00000000..75d682e2[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/__manifest__.py[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m{[m
+[32m+[m[32m    'name': 'Quản lý Chấm công & Tính lương',[m
+[32m+[m[32m    'version': '1.0',[m
+[32m+[m[32m    'summary': 'HRM Module - Chấm công và tính lương',[m
+[32m+[m[32m    'description': 'Module quản lý nhân viên, chấm công, tính lương và dashboard',[m
+[32m+[m[32m    'author': 'Your Team',[m
+[32m+[m[32m    'depends': ['base', 'nhan_su'],[m
+[32m+[m[32m    'data': [[m
+[32m+[m	[32m'security/ir.model.access.csv',[m
+[32m+[m[32m        'views/hr_phieu_luong_views.xml',[m
+[32m+[m[32m        'views/hr_dashboard_views.xml',[m
+[32m+[m[32m        'views/hr_dashboard_menu.xml',[m
+[32m+[m[32m    ],[m
+[32m+[m[32m    'installable': True,[m
+[32m+[m[32m    'application': True,[m
+[32m+[m[32m}[m
+[1mdiff --git a/addons/ql_tinh_luong/models/__init__.py b/addons/ql_tinh_luong/models/__init__.py[m
+[1mnew file mode 100644[m
+[1mindex 00000000..d5a63ed2[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/models/__init__.py[m
+[36m@@ -0,0 +1,3 @@[m
+[32m+[m[32mfrom . import hr_cham_cong[m
+[32m+[m[32mfrom . import hr_khen_thuong_ky_luat[m
+[32m+[m[32mfrom . import hr_phieu_luong[m
+[1mdiff --git a/addons/ql_tinh_luong/models/hr_cham_cong.py b/addons/ql_tinh_luong/models/hr_cham_cong.py[m
+[1mnew file mode 100644[m
+[1mindex 00000000..c85f5e7d[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/models/hr_cham_cong.py[m
+[36m@@ -0,0 +1,41 @@[m
+[32m+[m[32mfrom odoo import models, fields[m
+[32m+[m
+[32m+[m
+[32m+[m[32mclass HRChamCong(models.Model):[m
+[32m+[m[32m    _name = 'hr.cham.cong'[m
+[32m+[m[32m    _description = 'Chấm công nhân viên'[m
+[32m+[m
+[32m+[m[32m    nhan_vien_id = fields.Many2one([m
+[32m+[m[32m        'nhan_vien',[m
+[32m+[m[32m        string='Nhân viên',[m
+[32m+[m[32m        required=True[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32m    ngay = fields.Date([m
+[32m+[m[32m        string='Ngày chấm công',[m
+[32m+[m[32m        required=True[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32m    thang = fields.Integer([m
+[32m+[m[32m        string='Tháng',[m
+[32m+[m[32m        required=True[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32m    nam = fields.Integer([m
+[32m+[m[32m        string='Năm',[m
+[32m+[m[32m        required=True[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32m    trang_thai = fields.Selection([m
+[32m+[m[32m        [[m
+[32m+[m[32m            ('di_lam', 'Đi làm'),[m
+[32m+[m[32m            ('nghi', 'Nghỉ')[m
+[32m+[m[32m        ],[m
+[32m+[m[32m        string='Trạng thái',[m
+[32m+[m[32m        default='di_lam',[m
+[32m+[m[32m        required=True[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32m    ghi_chu = fields.Text([m
+[32m+[m[32m        string='Ghi chú'[m
+[32m+[m[32m    )[m
+[1mdiff --git a/addons/ql_tinh_luong/models/hr_khen_thuong_ky_luat.py b/addons/ql_tinh_luong/models/hr_khen_thuong_ky_luat.py[m
+[1mnew file mode 100644[m
+[1mindex 00000000..b1c195ae[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/models/hr_khen_thuong_ky_luat.py[m
+[36m@@ -0,0 +1,19 @@[m
+[32m+[m[32mfrom odoo import models, fields[m
+[32m+[m
+[32m+[m
+[32m+[m[32mclass HRKhenThuongKyLuat(models.Model):[m
+[32m+[m[32m    _name = 'hr.khen.thuong.ky.luat'[m
+[32m+[m[32m    _description = 'Khen thưởng và kỷ luật nhân viên'[m
+[32m+[m
+[32m+[m[32m    nhan_vien_id = fields.Many2one('nhan_vien', string='Nhân viên', required=True)[m
+[32m+[m
+[32m+[m[32m    loai_quyet_dinh = fields.Selection([[m
+[32m+[m[32m        ('thuong', 'Khen thưởng'),[m
+[32m+[m[32m        ('phat', 'Kỷ luật')[m
+[32m+[m[32m    ], string='Loại quyết định', required=True)[m
+[32m+[m
+[32m+[m[32m    so_tien = fields.Float(string='Số tiền', default=0.0)[m
+[32m+[m
+[32m+[m[32m    ngay_ap_dung = fields.Date(string='Ngày áp dụng', default=fields.Date.today)[m
+[32m+[m
+[32m+[m[32m    ghi_chu = fields.Text(string='Ghi chú')[m
+[1mdiff --git a/addons/ql_tinh_luong/models/hr_phieu_luong.py b/addons/ql_tinh_luong/models/hr_phieu_luong.py[m
+[1mnew file mode 100644[m
+[1mindex 00000000..e00731fa[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/models/hr_phieu_luong.py[m
+[36m@@ -0,0 +1,54 @@[m
+[32m+[m[32mfrom odoo import models, fields, api[m
+[32m+[m
+[32m+[m
+[32m+[m[32mclass HRPhieuLuong(models.Model):[m
+[32m+[m[32m    _name = 'hr.phieu.luong'[m
+[32m+[m[32m    _description = 'Phiếu lương'[m
+[32m+[m
+[32m+[m[32m    nhan_vien_id = fields.Many2one('nhan_vien', string='Nhân viên', required=True)[m
+[32m+[m
+[32m+[m[32m    thang = fields.Integer(string='Tháng', required=True)[m
+[32m+[m[32m    nam = fields.Integer(string='Năm', required=True)[m
+[32m+[m
+[32m+[m[32m    luong_co_ban = fields.Float(string='Lương cơ bản', default=5000000)[m
+[32m+[m
+[32m+[m[32m    tong_cong = fields.Float(compute='_compute_luong', store=True)[m
+[32m+[m[32m    tong_thuong = fields.Float(compute='_compute_luong', store=True)[m
+[32m+[m[32m    tong_phat = fields.Float(compute='_compute_luong', store=True)[m
+[32m+[m[32m    thuc_linh = fields.Float(compute='_compute_luong', store=True)[m
+[32m+[m
+[32m+[m[32m    @api.depends('nhan_vien_id', 'thang', 'nam', 'luong_co_ban')[m
+[32m+[m[32m    def _compute_luong(self):[m
+[32m+[m[32m        for rec in self:[m
+[32m+[m
+[32m+[m[32m            if not rec.nhan_vien_id:[m
+[32m+[m[32m                rec.tong_cong = 0[m
+[32m+[m[32m                rec.tong_thuong = 0[m
+[32m+[m[32m                rec.tong_phat = 0[m
+[32m+[m[32m                rec.thuc_linh = 0[m
+[32m+[m[32m                continue[m
+[32m+[m
+[32m+[m[32m            cham_cong = self.env['hr.cham.cong'].search([[m
+[32m+[m[32m                ('nhan_vien_id', '=', rec.nhan_vien_id.id),[m
+[32m+[m[32m                ('thang', '=', rec.thang),[m
+[32m+[m[32m                ('nam', '=', rec.nam),[m
+[32m+[m[32m                ('trang_thai', '=', 'di_lam')[m
+[32m+[m[32m            ])[m
+[32m+[m
+[32m+[m[32m            so_ngay_cong = len(cham_cong)[m
+[32m+[m
+[32m+[m[32m            quyet_dinh = self.env['hr.khen.thuong.ky.luat'].search([[m
+[32m+[m[32m                ('nhan_vien_id', '=', rec.nhan_vien_id.id),[m
+[32m+[m[32m                ('thang', '=', rec.thang),[m
+[32m+[m[32m                ('nam', '=', rec.nam),[m
+[32m+[m[32m            ])[m
+[32m+[m
+[32m+[m[32m            tong_thuong = sum(x.so_tien for x in quyet_dinh if x.loai_quyet_dinh == 'thuong')[m
+[32m+[m[32m            tong_phat = sum(x.so_tien for x in quyet_dinh if x.loai_quyet_dinh == 'phat')[m
+[32m+[m
+[32m+[m[32m            luong_ngay = rec.luong_co_ban / 26[m
+[32m+[m
+[32m+[m[32m            rec.tong_cong = so_ngay_cong[m
+[32m+[m[32m            rec.tong_thuong = tong_thuong[m
+[32m+[m[32m            rec.tong_phat = tong_phat[m
+[32m+[m[32m            rec.thuc_linh = (so_ngay_cong * luong_ngay) + tong_thuong - tong_phat[m
+[1mdiff --git a/addons/ql_tinh_luong/reports/hr_phieu_luong_report.xml b/addons/ql_tinh_luong/reports/hr_phieu_luong_report.xml[m
+[1mnew file mode 100644[m
+[1mindex 00000000..7d44acfd[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/reports/hr_phieu_luong_report.xml[m
+[36m@@ -0,0 +1,14 @@[m
+[32m+[m[32m<?xml version="1.0" encoding="UTF-8"?>[m
+[32m+[m[32m<odoo>[m
+[32m+[m
+[32m+[m[32m    <report[m
+[32m+[m[32m        id="action_report_phieu_luong"[m
+[32m+[m[32m        model="hr.phieu.luong"[m
+[32m+[m[32m        string="Phiếu lương PDF"[m
+[32m+[m[32m        report_type="qweb-pdf"[m
+[32m+[m[32m        name="quan_ly_cham_cong_luong.report_phieu_luong_template"[m
+[32m+[m[32m        file="quan_ly_cham_cong_luong.report_phieu_luong_template"[m
+[32m+[m[32m        print_report_name="'Phieu_Luong_%s' % (object.nhan_vien_id.name)"[m
+[32m+[m[32m    />[m
+[32m+[m
+[32m+[m[32m</odoo>[m
+[1mdiff --git a/addons/ql_tinh_luong/security/ir.model.access.csv b/addons/ql_tinh_luong/security/ir.model.access.csv[m
+[1mnew file mode 100644[m
+[1mindex 00000000..b021a613[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/security/ir.model.access.csv[m
+[36m@@ -0,0 +1,7 @@[m
+[32m+[m[32mid,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink[m
+[32m+[m
+[32m+[m[32maccess_hr_cham_cong,access_hr_cham_cong,model_hr_cham_cong,,1,1,1,1[m
+[32m+[m
+[32m+[m[32maccess_hr_khen_thuong_ky_luat,access_hr_khen_thuong_ky_luat,model_hr_khen_thuong_ky_luat,,1,1,1,1[m
+[32m+[m
+[32m+[m[32maccess_hr_phieu_luong,access_hr_phieu_luong,model_hr_phieu_luong,,1,1,1,1[m
+[1mdiff --git a/addons/ql_tinh_luong/views/hr_dashboard_menu.xml b/addons/ql_tinh_luong/views/hr_dashboard_menu.xml[m
+[1mnew file mode 100644[m
+[1mindex 00000000..09b029f9[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/views/hr_dashboard_menu.xml[m
+[36m@@ -0,0 +1,16 @@[m
+[32m+[m[32m<odoo>[m
+[32m+[m
+[32m+[m[32m    <record id="action_hr_dashboard" model="ir.actions.act_window">[m
+[32m+[m[32m        <field name="name">HR Dashboard</field>[m
+[32m+[m[32m        <field name="res_model">hr.dashboard.wizard</field>[m
+[32m+[m[32m        <field name="view_mode">form</field>[m
+[32m+[m[32m        <field name="target">new</field>[m
+[32m+[m[32m    </record>[m
+[32m+[m
+[32m+[m[32m    <menuitem id="menu_hr_dashboard"[m
+[32m+[m[32m              name="Dashboard HR"[m
+[32m+[m[32m              action="action_hr_dashboard"[m
+[32m+[m[32m              parent="base.menu_administration"/>[m
+[32m+[m
+[32m+[m[32m</odoo>[m
+[32m+[m
+[1mdiff --git a/addons/ql_tinh_luong/views/hr_dashboard_views.xml b/addons/ql_tinh_luong/views/hr_dashboard_views.xml[m
+[1mnew file mode 100644[m
+[1mindex 00000000..d24dcdb6[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/views/hr_dashboard_views.xml[m
+[36m@@ -0,0 +1,24 @@[m
+[32m+[m[32m<odoo>[m
+[32m+[m
+[32m+[m[32m    <record id="view_hr_dashboard_form" model="ir.ui.view">[m
+[32m+[m[32m        <field name="name">hr.dashboard.form</field>[m
+[32m+[m[32m        <field name="model">hr.dashboard.wizard</field>[m
+[32m+[m[32m        <field name="arch" type="xml">[m
+[32m+[m[32m            <form string="HR Dashboard">[m
+[32m+[m
+[32m+[m[32m                <sheet>[m
+[32m+[m
+[32m+[m[32m                    <group>[m
+[32m+[m[32m                        <field name="tong_nhan_vien"/>[m
+[32m+[m[32m                        <field name="tong_luong"/>[m
+[32m+[m[32m                        <field name="tong_thuong"/>[m
+[32m+[m[32m                        <field name="tong_phat"/>[m
+[32m+[m[32m                    </group>[m
+[32m+[m
+[32m+[m[32m                </sheet>[m
+[32m+[m
+[32m+[m[32m            </form>[m
+[32m+[m[32m        </field>[m
+[32m+[m[32m    </record>[m
+[32m+[m
+[32m+[m[32m</odoo>[m
+[1mdiff --git a/addons/ql_tinh_luong/views/hr_phieu_luong_views.xml b/addons/ql_tinh_luong/views/hr_phieu_luong_views.xml[m
+[1mnew file mode 100644[m
+[1mindex 00000000..d93b09a5[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/views/hr_phieu_luong_views.xml[m
+[36m@@ -0,0 +1,31 @@[m
+[32m+[m[32m<odoo>[m
+[32m+[m
+[32m+[m[32m    <record id="view_hr_phieu_luong_form" model="ir.ui.view">[m
+[32m+[m[32m        <field name="name">hr.phieu.luong.form</field>[m
+[32m+[m[32m        <field name="model">hr.phieu.luong</field>[m
+[32m+[m[32m        <field name="arch" type="xml">[m
+[32m+[m[32m            <form string="Phiếu lương">[m
+[32m+[m
+[32m+[m[32m                <sheet>[m
+[32m+[m
+[32m+[m[32m                    <group>[m
+[32m+[m[32m                        <field name="nhan_vien_id"/>[m
+[32m+[m[32m                        <field name="thang"/>[m
+[32m+[m[32m                        <field name="nam"/>[m
+[32m+[m[32m                        <field name="luong_co_ban"/>[m
+[32m+[m[32m                    </group>[m
+[32m+[m
+[32m+[m[32m                    <group>[m
+[32m+[m[32m                        <field name="tong_cong" readonly="1"/>[m
+[32m+[m[32m                        <field name="tong_thuong" readonly="1"/>[m
+[32m+[m[32m                        <field name="tong_phat" readonly="1"/>[m
+[32m+[m[32m                        <field name="thuc_linh" readonly="1"/>[m
+[32m+[m[32m                    </group>[m
+[32m+[m
+[32m+[m[32m                </sheet>[m
+[32m+[m
+[32m+[m[32m            </form>[m
+[32m+[m[32m        </field>[m
+[32m+[m[32m    </record>[m
+[32m+[m
+[32m+[m[32m</odoo>[m
+[1mdiff --git a/addons/ql_tinh_luong/wizard/__init__.py b/addons/ql_tinh_luong/wizard/__init__.py[m
+[1mnew file mode 100644[m
+[1mindex 00000000..7914833e[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/wizard/__init__.py[m
+[36m@@ -0,0 +1 @@[m
+[32m+[m[32mfrom . import hr_dashboard[m
+[1mdiff --git a/addons/ql_tinh_luong/wizard/hr_dashboard.py b/addons/ql_tinh_luong/wizard/hr_dashboard.py[m
+[1mnew file mode 100644[m
+[1mindex 00000000..f0f0ee8d[m
+[1m--- /dev/null[m
+[1m+++ b/addons/ql_tinh_luong/wizard/hr_dashboard.py[m
+[36m@@ -0,0 +1,22 @@[m
+[32m+[m[32mfrom odoo import models, fields, api[m
+[32m+[m
+[32m+[m
+[32m+[m[32mclass HRDashboardWizard(models.TransientModel):[m
+[32m+[m[32m    _name = 'hr.dashboard.wizard'[m
+[32m+[m[32m    _description = 'HR Dashboard'[m
+[32m+[m
+[32m+[m[32m    name = fields.Char(default="Dashboard")[m
+[32m+[m
+[32m+[m[32m    tong_nhan_vien = fields.Integer(compute="_compute_data")[m
+[32m+[m[32m    tong_luong = fields.Float(compute="_compute_data")[m
+[32m+[m[32m    tong_thuong = fields.Float(compute="_compute_data")[m
+[32m+[m[32m    tong_phat = fields.Float(compute="_compute_data")[m
+[32m+[m
+[32m+[m[32m    def _compute_data(self):[m
+[32m+[m[32m        phieu = self.env['hr.phieu.luong'].search([])[m
+[32m+[m[32m        nhanvien = self.env['nhan_vien'].search([])[m
+[32m+[m
+[32m+[m[32m        self.tong_nhan_vien = len(nhanvien)[m
+[32m+[m[32m        self.tong_luong = sum(p.thuc_linh for p in phieu)[m
+[32m+[m[32m        self.tong_thuong = sum(p.tong_thuong for p in phieu)[m
+[32m+[m[32m        self.tong_phat = sum(p.tong_phat for p in phieu)[m
