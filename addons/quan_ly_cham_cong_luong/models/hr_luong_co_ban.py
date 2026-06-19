@@ -1,0 +1,44 @@
+from odoo import models, fields
+
+
+class HRLuongCoBan(models.Model):
+    _name = 'hr_luong_co_ban'
+    _description = 'Cấu hình lương cơ bản nhân viên'
+    _rec_name = 'nhan_vien_id'
+
+    nhan_vien_id = fields.Many2one(
+        'nhan_vien',
+        string='Nhân viên',
+        required=True
+    )
+
+    ma_dinh_danh = fields.Char(
+        string='Mã định danh',
+        related='nhan_vien_id.ma_dinh_danh',
+        store=True
+    )
+
+    luong_co_ban = fields.Float(
+        string='Lương cơ bản (VND)',
+        required=True,
+        default=0.0
+    )
+
+    phu_cap_an_trua = fields.Float(
+        string='Phụ cấp ăn trưa',
+        default=0.0
+    )
+
+    phu_cap_trach_nhiem = fields.Float(
+        string='Phụ cấp trách nhiệm',
+        default=0.0
+    )
+
+    phu_cap_khac = fields.Float(
+        string='Phụ cấp khác',
+        default=0.0
+    )
+
+    ghi_chu = fields.Text(
+        string='Ghi chú bổ sung'
+    )

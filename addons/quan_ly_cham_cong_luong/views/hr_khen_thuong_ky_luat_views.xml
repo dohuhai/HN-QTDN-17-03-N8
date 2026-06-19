@@ -1,0 +1,47 @@
+<odoo>
+    <record id="view_hr_khen_thuong_ky_luat_tree" model="ir.ui.view">
+        <field name="name">hr_khen_thuong_ky_luat_tree</field>
+        <field name="model">hr_khen_thuong_ky_luat</field>
+        <field name="arch" type="xml">
+            <tree string="Khen thưởng - Kỷ luật">
+                <field name="ngay_ap_dung"/>
+                <field name="nhan_vien_id"/>
+                <field name="ma_dinh_danh"/>
+                <field name="loai_quyet_dinh"/>
+                <field name="so_tien"/>
+                <field name="ly_do"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_khen_thuong_ky_luat_form" model="ir.ui.view">
+        <field name="name">hr_khen_thuong_ky_luat_form</field>
+        <field name="model">hr_khen_thuong_ky_luat</field>
+        <field name="arch" type="xml">
+            <form string="Khen thưởng - Kỷ luật">
+                <sheet>
+                    <group>
+                        <group string="Nhân viên">
+                            <field name="nhan_vien_id"/>
+                            <field name="ma_dinh_danh" readonly="1"/>
+                        </group>
+                        <group string="Quyết định">
+                            <field name="loai_quyet_dinh"/>
+                            <field name="so_tien"/>
+                            <field name="ngay_ap_dung"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="ly_do"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_khen_thuong_ky_luat" model="ir.actions.act_window">
+        <field name="name">Khen thưởng - Kỷ luật</field>
+        <field name="res_model">hr_khen_thuong_ky_luat</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

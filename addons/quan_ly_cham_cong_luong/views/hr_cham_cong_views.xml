@@ -1,0 +1,50 @@
+<odoo>
+    <record id="view_hr_cham_cong_tree" model="ir.ui.view">
+        <field name="name">hr_cham_cong_tree</field>
+        <field name="model">hr_cham_cong</field>
+        <field name="arch" type="xml">
+            <tree string="Chấm công hằng ngày">
+                <field name="ngay_cham_cong"/>
+                <field name="nhan_vien_id"/>
+                <field name="ma_dinh_danh"/>
+                <field name="trang_thai"/>
+                <field name="so_gio_lam_viec"/>
+                <field name="so_gio_tang_ca"/>
+                <field name="nguoi_xac_nhan"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_hr_cham_cong_form" model="ir.ui.view">
+        <field name="name">hr_cham_cong_form</field>
+        <field name="model">hr_cham_cong</field>
+        <field name="arch" type="xml">
+            <form string="Chấm công hằng ngày">
+                <sheet>
+                    <group>
+                        <group string="Thông tin chấm công">
+                            <field name="nhan_vien_id"/>
+                            <field name="ma_dinh_danh" readonly="1"/>
+                            <field name="ngay_cham_cong"/>
+                            <field name="trang_thai"/>
+                        </group>
+                        <group string="Thời gian làm việc">
+                            <field name="so_gio_lam_viec" readonly="1"/>
+                            <field name="so_gio_tang_ca"/>
+                            <field name="nguoi_xac_nhan"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="ghi_chu"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_cham_cong" model="ir.actions.act_window">
+        <field name="name">Chấm công</field>
+        <field name="res_model">hr_cham_cong</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

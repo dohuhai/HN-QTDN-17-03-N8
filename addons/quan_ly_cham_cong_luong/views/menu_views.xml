@@ -1,0 +1,39 @@
+<odoo>
+    <menuitem id="menu_quan_ly_cham_cong_luong_root"
+              name="Chấm công &amp; Tính lương"
+              sequence="10"/>
+
+    <menuitem id="menu_quan_ly_cham_cong"
+              name="Chấm công"
+              parent="menu_quan_ly_cham_cong_luong_root"
+              sequence="10"/>
+
+    <menuitem id="menu_quan_ly_luong"
+              name="Tính lương"
+              parent="menu_quan_ly_cham_cong_luong_root"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_cham_cong"
+              name="Dữ liệu chấm công"
+              parent="menu_quan_ly_cham_cong"
+              action="action_hr_cham_cong"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_luong_co_ban"
+              name="Cấu hình lương cơ bản"
+              parent="menu_quan_ly_luong"
+              action="action_hr_luong_co_ban"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_khen_thuong_ky_luat"
+              name="Khen thưởng - Kỷ luật"
+              parent="menu_quan_ly_luong"
+              action="action_hr_khen_thuong_ky_luat"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_phieu_luong"
+              name="Phiếu lương tháng"
+              parent="menu_quan_ly_luong"
+              action="action_hr_phieu_luong"
+              sequence="30"/>
+</odoo>
