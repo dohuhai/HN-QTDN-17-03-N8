@@ -3,7 +3,9 @@
         <field name="name">hr_phieu_luong_tree</field>
         <field name="model">hr_phieu_luong</field>
         <field name="arch" type="xml">
-            <tree string="Phiếu lương tháng">
+            <tree string="Phiếu lương tháng"
+                  decoration-success="trang_thai == 'xac_nhan'"
+                  decoration-danger="trang_thai == 'huy'">
                 <field name="ten_phieu_luong"/>
                 <field name="nhan_vien_id"/>
                 <field name="ma_dinh_danh"/>
@@ -15,6 +17,7 @@
                 <field name="tong_khen_thuong"/>
                 <field name="tong_ky_luat"/>
                 <field name="tien_bao_hiem"/>
+                <field name="tong_thu_nhap"/>
                 <field name="thuc_linh"/>
                 <field name="trang_thai"/>
             </tree>
@@ -28,7 +31,7 @@
             <form string="Phiếu lương tháng">
                 <header>
                     <button name="action_xac_nhan"
-                            string="Xác nhận"
+                            string="Xác nhận phiếu lương"
                             type="object"
                             class="btn-primary"
                             attrs="{'invisible': [('trang_thai', '!=', 'nhap')]}"/>
@@ -39,7 +42,7 @@
                             attrs="{'invisible': [('trang_thai', '!=', 'xac_nhan')]}"/>
 
                     <button name="action_huy"
-                            string="Hủy"
+                            string="Hủy phiếu"
                             type="object"
                             attrs="{'invisible': [('trang_thai', '=', 'huy')]}"/>
 
@@ -50,34 +53,33 @@
 
                 <sheet>
                     <div class="oe_title">
+                        <label for="ten_phieu_luong"/>
                         <h1>
                             <field name="ten_phieu_luong" readonly="1"/>
                         </h1>
                     </div>
 
-                    <group>
-                        <group string="Thông tin nhân viên">
+                    <group string="Thông tin phiếu lương">
+                        <group>
                             <field name="nhan_vien_id"/>
                             <field name="ma_dinh_danh" readonly="1"/>
+                        </group>
+                        <group>
                             <field name="thang"/>
                             <field name="nam"/>
-                        </group>
-
-                        <group string="Bảo hiểm">
-                            <field name="ty_le_bao_hiem"/>
-                            <field name="tien_bao_hiem" readonly="1"/>
                         </group>
                     </group>
 
                     <notebook>
                         <page string="Dữ liệu chấm công">
                             <group>
-                                <group>
+                                <group string="Ngày công">
                                     <field name="so_ngay_di_lam" readonly="1"/>
                                     <field name="so_ngay_nua_ngay" readonly="1"/>
                                     <field name="so_ngay_cong_tinh_luong" readonly="1"/>
                                 </group>
-                                <group>
+
+                                <group string="Nghỉ phép và tăng ca">
                                     <field name="so_ngay_nghi_co_phep" readonly="1"/>
                                     <field name="so_ngay_nghi_khong_phep" readonly="1"/>
                                     <field name="tong_gio_tang_ca" readonly="1"/>
@@ -85,13 +87,26 @@
                             </group>
                         </page>
 
-                        <page string="Tính lương">
+                        <page string="Thu nhập và khấu trừ">
                             <group>
                                 <group string="Thu nhập">
                                     <field name="luong_co_ban" readonly="1"/>
                                     <field name="phu_cap" readonly="1"/>
                                     <field name="tong_khen_thuong" readonly="1"/>
+                                </group>
+
+                                <group string="Khấu trừ">
                                     <field name="tong_ky_luat" readonly="1"/>
+                                    <field name="ty_le_bao_hiem"/>
+                                    <field name="tien_bao_hiem" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Kết quả tính lương">
+                            <group>
+                                <group string="Công thức tính">
+                                    <label string="Thực lĩnh = (Lương cơ bản / 26) x Số ngày công + Phụ cấp + Khen thưởng - Kỷ luật - Bảo hiểm"/>
                                 </group>
 
                                 <group string="Kết quả">
