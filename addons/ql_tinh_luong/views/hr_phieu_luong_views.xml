@@ -1,0 +1,31 @@
+<odoo>
+
+    <record id="view_hr_phieu_luong_form" model="ir.ui.view">
+        <field name="name">hr.phieu.luong.form</field>
+        <field name="model">hr.phieu.luong</field>
+        <field name="arch" type="xml">
+            <form string="Phiếu lương">
+
+                <sheet>
+
+                    <group>
+                        <field name="nhan_vien_id"/>
+                        <field name="thang"/>
+                        <field name="nam"/>
+                        <field name="luong_co_ban"/>
+                    </group>
+
+                    <group>
+                        <field name="tong_cong" readonly="1"/>
+                        <field name="tong_thuong" readonly="1"/>
+                        <field name="tong_phat" readonly="1"/>
+                        <field name="thuc_linh" readonly="1"/>
+                    </group>
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+</odoo>

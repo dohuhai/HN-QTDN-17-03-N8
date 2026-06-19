@@ -1,0 +1,24 @@
+<odoo>
+
+    <record id="view_hr_dashboard_form" model="ir.ui.view">
+        <field name="name">hr.dashboard.form</field>
+        <field name="model">hr.dashboard.wizard</field>
+        <field name="arch" type="xml">
+            <form string="HR Dashboard">
+
+                <sheet>
+
+                    <group>
+                        <field name="tong_nhan_vien"/>
+                        <field name="tong_luong"/>
+                        <field name="tong_thuong"/>
+                        <field name="tong_phat"/>
+                    </group>
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+</odoo>

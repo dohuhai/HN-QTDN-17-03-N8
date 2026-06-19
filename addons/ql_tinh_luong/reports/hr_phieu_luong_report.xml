@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <report
+        id="action_report_phieu_luong"
+        model="hr.phieu.luong"
+        string="Phiếu lương PDF"
+        report_type="qweb-pdf"
+        name="quan_ly_cham_cong_luong.report_phieu_luong_template"
+        file="quan_ly_cham_cong_luong.report_phieu_luong_template"
+        print_report_name="'Phieu_Luong_%s' % (object.nhan_vien_id.name)"
+    />
+
+</odoo>

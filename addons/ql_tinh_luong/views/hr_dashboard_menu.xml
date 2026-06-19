@@ -1,0 +1,16 @@
+<odoo>
+
+    <record id="action_hr_dashboard" model="ir.actions.act_window">
+        <field name="name">HR Dashboard</field>
+        <field name="res_model">hr.dashboard.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_hr_dashboard"
+              name="Dashboard HR"
+              action="action_hr_dashboard"
+              parent="base.menu_administration"/>
+
+</odoo>
+
