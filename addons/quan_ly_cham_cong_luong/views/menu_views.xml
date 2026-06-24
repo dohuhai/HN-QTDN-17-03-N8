@@ -1,6 +1,8 @@
 <odoo>
+
+    <!-- MENU GỐC 1: CHẤM CÔNG -->
     <menuitem id="menu_quan_ly_cham_cong_luong_root"
-              name="Chấm công &amp; Tính lương"
+              name="Chấm công"
               sequence="10"/>
 
     <menuitem id="menu_hr_cham_cong"
@@ -9,21 +11,28 @@
               action="action_hr_cham_cong"
               sequence="10"/>
 
+
+    <!-- MENU GỐC 2: TÍNH LƯƠNG -->
+    <menuitem id="menu_quan_ly_tinh_luong_root"
+              name="Tính lương"
+              sequence="20"/>
+
     <menuitem id="menu_hr_luong_co_ban"
               name="Cấu hình lương cơ bản"
-              parent="menu_quan_ly_cham_cong_luong_root"
+              parent="menu_quan_ly_tinh_luong_root"
               action="action_hr_luong_co_ban"
-              sequence="20"/>
+              sequence="10"/>
 
     <menuitem id="menu_hr_khen_thuong_ky_luat"
               name="Khen thưởng - Kỷ luật"
-              parent="menu_quan_ly_cham_cong_luong_root"
+              parent="menu_quan_ly_tinh_luong_root"
               action="action_hr_khen_thuong_ky_luat"
-              sequence="30"/>
+              sequence="20"/>
 
     <menuitem id="menu_hr_phieu_luong"
               name="Phiếu lương tháng"
-              parent="menu_quan_ly_cham_cong_luong_root"
+              parent="menu_quan_ly_tinh_luong_root"
               action="action_hr_phieu_luong"
-              sequence="40"/>
+              sequence="30"/>
+
 </odoo>

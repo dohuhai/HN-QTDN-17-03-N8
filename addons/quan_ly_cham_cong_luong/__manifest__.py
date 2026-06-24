@@ -1,12 +1,16 @@
 {
-    'name': 'Quản lý Chấm công & Tính lương',
+    'name': 'Quản lý nhân sự',
     'version': '1.0',
     'summary': 'Tự động hóa chấm công, tính lương, thưởng phạt và bảo hiểm',
-    'description': '''
-Module Quản lý Chấm công & Tính lương.
-Kết nối dữ liệu nhân sự từ module ql_nhan_su.
-Hỗ trợ cấu hình lương cơ bản, chấm công, khen thưởng, kỷ luật và tự động tính phiếu lương tháng.
-    ''',
+    'description': """
+Module Quản lý nhân sự.
+
+Gồm 2 phân hệ riêng:
+- Chấm công: quản lý dữ liệu chấm công nhân viên.
+- Tính lương: cấu hình lương, khen thưởng, kỷ luật và tạo phiếu lương tháng.
+
+Dữ liệu chấm công là đầu vào phục vụ quá trình tính lương.
+    """,
     'category': 'Human Resources',
     'author': 'Do Huu Hai',
     'depends': ['base', 'ql_nhan_su'],
