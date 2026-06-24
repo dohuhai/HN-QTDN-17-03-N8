@@ -238,4 +238,13 @@ class HrPhieuLuong(models.Model):
             rec.da_gui_email = True
             rec.ngay_gui_email = fields.Datetime.now()
 
-        return True
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Gửi email phiếu lương',
+                    'message': 'Đã gửi email phiếu lương cho nhân viên %s.' % rec.nhan_vien_id.display_name,
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
