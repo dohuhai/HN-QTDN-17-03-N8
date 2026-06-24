@@ -8,6 +8,7 @@
                 <field name="ten_phieu_luong"/>
                 <field name="nhan_vien_id"/>
                 <field name="ma_dinh_danh"/>
+                <field name="email_nhan_vien"/>
                 <field name="thang"/>
                 <field name="nam" options="{'format': false}"/>
                 <field name="so_ngay_cong_tinh_luong"/>
@@ -18,6 +19,7 @@
                 <field name="tien_bao_hiem"/>
                 <field name="thuc_linh"/>
                 <field name="trang_thai"/>
+                <field name="da_gui_email"/>
             </tree>
         </field>
     </record>
@@ -40,6 +42,12 @@
                             class="btn-success"
                             attrs="{'invisible': [('trang_thai', '!=', 'xac_nhan')]}"/>
 
+                    <button name="action_gui_email_phieu_luong"
+                            string="Gửi email phiếu lương"
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('trang_thai', '=', 'nhap')]}"/>
+
                     <button name="action_dua_ve_nhap"
                             string="Đưa về nháp"
                             type="object"
@@ -56,12 +64,15 @@
                             <field name="ten_phieu_luong"/>
                             <field name="nhan_vien_id"/>
                             <field name="ma_dinh_danh" readonly="1"/>
+                            <field name="email_nhan_vien" readonly="1"/>
                             <field name="thang"/>
                             <field name="nam" options="{'format': false}"/>
                         </group>
 
                         <group string="Thông tin công">
                             <field name="so_ngay_cong_tinh_luong"/>
+                            <field name="da_gui_email" readonly="1"/>
+                            <field name="ngay_gui_email" readonly="1"/>
                         </group>
                     </group>
 
@@ -112,6 +123,7 @@
                 <field name="ten_phieu_luong"/>
                 <field name="nhan_vien_id"/>
                 <field name="ma_dinh_danh"/>
+                <field name="email_nhan_vien"/>
                 <field name="thang"/>
                 <field name="nam"/>
                 <field name="trang_thai"/>
@@ -119,6 +131,7 @@
                 <filter string="Nháp" name="filter_nhap" domain="[('trang_thai','=','nhap')]"/>
                 <filter string="Đã xác nhận" name="filter_xac_nhan" domain="[('trang_thai','=','xac_nhan')]"/>
                 <filter string="Đã thanh toán" name="filter_thanh_toan" domain="[('trang_thai','=','thanh_toan')]"/>
+                <filter string="Đã gửi email" name="filter_da_gui_email" domain="[('da_gui_email','=',True)]"/>
 
                 <group expand="0" string="Nhóm theo">
                     <filter string="Nhân viên" name="group_nhan_vien" context="{'group_by':'nhan_vien_id'}"/>

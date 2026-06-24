@@ -13,7 +13,7 @@ Dữ liệu chấm công là đầu vào phục vụ quá trình tính lương.
     """,
     'category': 'Human Resources',
     'author': 'Do Huu Hai',
-    'depends': ['base', 'ql_nhan_su'],
+    'depends': ['base','mail', 'ql_nhan_su'],
     'data': [
         'security/ir.model.access.csv',
         'views/hr_luong_co_ban_views.xml',

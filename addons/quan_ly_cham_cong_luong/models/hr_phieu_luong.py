@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class HrPhieuLuong(models.Model):
@@ -21,6 +22,13 @@ class HrPhieuLuong(models.Model):
     ma_dinh_danh = fields.Char(
         string='Mã định danh',
         related='nhan_vien_id.ma_dinh_danh',
+        store=True,
+        readonly=True
+    )
+
+    email_nhan_vien = fields.Char(
+        string='Email nhân viên',
+        related='nhan_vien_id.email',
         store=True,
         readonly=True
     )
@@ -88,6 +96,17 @@ class HrPhieuLuong(models.Model):
         ('thanh_toan', 'Đã thanh toán'),
     ], string='Trạng thái', default='nhap')
 
+    da_gui_email = fields.Boolean(
+        string='Đã gửi email',
+        default=False,
+        readonly=True
+    )
+
+    ngay_gui_email = fields.Datetime(
+        string='Ngày gửi email',
+        readonly=True
+    )
+
     ghi_chu = fields.Text(string='Ghi chú')
 
     @api.depends(
@@ -124,3 +143,99 @@ class HrPhieuLuong(models.Model):
     def action_dua_ve_nhap(self):
         for rec in self:
             rec.trang_thai = 'nhap'
+
+    def _format_money(self, amount):
+        return '{:,.0f} VND'.format(amount or 0)
+
+    def action_gui_email_phieu_luong(self):
+        for rec in self:
+            if rec.trang_thai not in ['xac_nhan', 'thanh_toan']:
+                raise UserError('Chỉ được gửi email khi phiếu lương đã được xác nhận hoặc đã thanh toán.')
+
+            if not rec.email_nhan_vien:
+                raise UserError('Nhân viên chưa có email trong hồ sơ HRM. Vui lòng cập nhật email nhân viên trước khi gửi.')
+
+            subject = 'Phiếu lương tháng %s/%s - Công ty TNHH Thương mại và Dịch vụ Minh Hải' % (
+                rec.thang,
+                rec.nam
+            )
+
+            body_html = """
+                <div style="font-family: Arial, sans-serif; font-size: 14px;">
+                    <p>Kính gửi <b>{nhan_vien}</b>,</p>
+
+                    <p>
+                        Công ty TNHH Thương mại và Dịch vụ Minh Hải gửi thông tin phiếu lương
+                        tháng <b>{thang}/{nam}</b> của Anh/Chị như sau:
+                    </p>
+
+                    <table border="1" cellpadding="8" cellspacing="0" style="border-collapse: collapse;">
+                        <tr>
+                            <td><b>Mã định danh</b></td>
+                            <td>{ma_dinh_danh}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Số ngày công tính lương</b></td>
+                            <td>{so_ngay_cong}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Lương cơ bản</b></td>
+                            <td>{luong_co_ban}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Phụ cấp</b></td>
+                            <td>{phu_cap}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Tổng khen thưởng</b></td>
+                            <td>{tong_khen_thuong}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Tổng kỷ luật</b></td>
+                            <td>{tong_ky_luat}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Tiền bảo hiểm</b></td>
+                            <td>{tien_bao_hiem}</td>
+                        </tr>
+                        <tr>
+                            <td><b>Thực lĩnh</b></td>
+                            <td><b>{thuc_linh}</b></td>
+                        </tr>
+                    </table>
+
+                    <p>
+                        Vui lòng kiểm tra thông tin phiếu lương. Nếu có sai lệch, Anh/Chị liên hệ
+                        Phòng Nhân sự hoặc Phòng Kế toán để được hỗ trợ.
+                    </p>
+
+                    <p>Trân trọng,<br/>
+                    Phòng Nhân sự - Công ty TNHH Thương mại và Dịch vụ Minh Hải</p>
+                </div>
+            """.format(
+                nhan_vien=rec.nhan_vien_id.display_name,
+                thang=rec.thang,
+                nam=rec.nam,
+                ma_dinh_danh=rec.ma_dinh_danh or '',
+                so_ngay_cong=rec.so_ngay_cong_tinh_luong,
+                luong_co_ban=rec._format_money(rec.luong_co_ban),
+                phu_cap=rec._format_money(rec.phu_cap),
+                tong_khen_thuong=rec._format_money(rec.tong_khen_thuong),
+                tong_ky_luat=rec._format_money(rec.tong_ky_luat),
+                tien_bao_hiem=rec._format_money(rec.tien_bao_hiem),
+                thuc_linh=rec._format_money(rec.thuc_linh),
+            )
+
+            mail_values = {
+                'subject': subject,
+                'email_to': rec.email_nhan_vien,
+                'body_html': body_html,
+            }
+
+            mail = self.env['mail.mail'].sudo().create(mail_values)
+            mail.sudo().send()
+
+            rec.da_gui_email = True
+            rec.ngay_gui_email = fields.Datetime.now()
+
+        return True
